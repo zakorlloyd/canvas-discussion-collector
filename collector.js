@@ -1,8 +1,7 @@
 // Canvas Discussion Collector Bookmarklet - Version 1.0
 
-javascript:(function(){
+(function(){
   if (!window._discussionCollector) {
-    // Detect if we're on a Canvas discussion page
     if (!/\/discussion_topics\//.test(window.location.pathname)) {
       alert('⚠️ This does not look like a Canvas discussion page. Please navigate to a discussion.');
       return;
@@ -13,17 +12,17 @@ javascript:(function(){
       mode: null,
       pageCount: 0
     };
+
     let mode = prompt("What do you want to grab?\n1 = Only Replies\n2 = Only Initial Posts\n3 = Both");
     if (['1','2','3'].includes(mode)) {
       window._discussionCollector.mode = mode;
-      alert('✅ Selection saved. Now start grabbing pages! Click this bookmarklet on each page. When done, click \"Finish Collection\" at the bottom right of your screen.");
+      alert('✅ Selection saved. Now start grabbing pages! Click this bookmarklet on each page. When done, click \"Finish Collection\" at the bottom right of your screen.');
     } else {
       alert('Invalid selection. Please try again.');
       window._discussionCollector = null;
       return;
     }
 
-    // Add a "Finish Collection" button to the page
     let finishButton = document.createElement('button');
     finishButton.innerText = '🚀 Finish Collection';
     finishButton.id = 'finishCollectorBtn';
@@ -51,7 +50,7 @@ javascript:(function(){
           prompt('Copy manually:', allText);
         });
       } else if (action === '2') {
-        let blob = new Blob([allText], {type: 'text/plain'});
+        let blob = new Blob([allText], {type:'text/plain'});
         let url = URL.createObjectURL(blob);
         let a = document.createElement('a');
         a.href = url;
@@ -65,18 +64,16 @@ javascript:(function(){
       document.getElementById('finishCollectorBtn').remove();
     };
     document.body.appendChild(finishButton);
-
     return;
   }
 
-  // Detect wrong page mid-session
   if (!/\/discussion_topics\//.test(window.location.pathname)) {
     alert('⚠️ You are not on a Canvas discussion page.');
     return;
   }
 
   // Auto-expand hidden replies
-  document.querySelectorAll('button, a').forEach(btn => {
+  document.querySelectorAll('button,a').forEach(btn => {
     if (/show replies|view replies|expand/i.test(btn.innerText)) {
       btn.click();
     }
